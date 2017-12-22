@@ -45,8 +45,25 @@
     if (block) {
         block(attributeModel);
     }
-    self.attributeModel = attributeModel;
+    if (attributeModel.text) {
+        self.languageKey = attributeModel.text;
+    }
+    LanguageType languageType = [[ZCLanguageManager shareManager] fetchLanguage];
+    if (!languageType) {
+        languageType = LanguageType_default;
+    }
+    NSString *language = [[ZCLanguageManager shareManager] readLanguageWithKey:self.languageKey languageType:languageType];
+    attributeModel.text = language;
     [attributeModel configuerationDataSource];
+    
+    //self.attributeModel = attributeModel;
+    //    self.font = attributeModel.font?attributeModel.font:[UIFont systemFontOfSize:12];
+    //    self.text = attributeModel.text?self.text:@"";
+    //    self.textColor = attributeModel.color?attributeModel.color:[UIColor blackColor];
+    //    self.textAlignment = attributeModel.textAlignemt;
+    //    if (attributeModel.attributeString) {
+    //        self.attributedText = attributeModel.attributeString;
+    //    }
 }
 
 

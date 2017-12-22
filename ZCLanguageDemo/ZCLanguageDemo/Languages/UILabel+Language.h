@@ -15,7 +15,7 @@
 
 -(ZCConfiguerationLanguageBlock)makeLanguage;
 -(ZCConfiguerationMutableAttributeLanguageBlock)makeAttributeLanguage;
--(ZCConfiguerationLanguageMakeAttributeBlock)makeAttributeModel;
+//-(ZCConfiguerationLanguageMakeAttributeBlock)makeAttributeModel;
 -(void)makeAttributeModel:(void(^)(ZCLanguageMakeAttributeModel *attributeModel))block;
 -(void)switchLanguage;
 -(void)switchLanguageAttribute;

@@ -23,7 +23,7 @@
     label.backgroundColor = [UIColor blueColor];
     [label makeAttributeModel:^(ZCLanguageMakeAttributeModel *attributeModel) {
         attributeModel.font = [UIFont systemFontOfSize:14];
-        attributeModel.text = @"你好";
+        attributeModel.text = @"订单详情";
         attributeModel.color = [UIColor redColor];
         attributeModel.textAlignemt = NSTextAlignmentCenter;
     }];
