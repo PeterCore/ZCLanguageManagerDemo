@@ -56,15 +56,8 @@
     attributeModel.text = language;
     [attributeModel configuerationDataSource];
     
-    //self.attributeModel = attributeModel;
-    //    self.font = attributeModel.font?attributeModel.font:[UIFont systemFontOfSize:12];
-    //    self.text = attributeModel.text?self.text:@"";
-    //    self.textColor = attributeModel.color?attributeModel.color:[UIColor blackColor];
-    //    self.textAlignment = attributeModel.textAlignemt;
-    //    if (attributeModel.attributeString) {
-    //        self.attributedText = attributeModel.attributeString;
-    //    }
 }
+
 
 
 -(ZCConfiguerationLanguageBlock)makeLanguage{

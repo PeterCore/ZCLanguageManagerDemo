@@ -7,8 +7,7 @@
 //
 
 #import "ZCLanguageMakeModel.h"
-
-
+#import "UILabel+Language.h"
 
 
 @interface ZCLanguageMakeModel()
@@ -52,6 +51,9 @@
     if (self.attributeString) {
         label.attributedText = self.attributeString;
     }
+    label.attributeModel = self;
+//    NSLog(@"attribute is %@",label.attributeModel.text);
+//    int i = 0;
 }
 @end
 
