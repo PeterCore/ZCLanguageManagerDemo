@@ -3,7 +3,7 @@
 //  QXDriver
 //
 //  Created by zhangchun on 2017/12/1.
-//  Copyright © 2017年 千夏. All rights reserved.
+//  Copyright © 2017年 zhangchun. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -22,4 +22,5 @@
 @interface ZCLanguageMakeAttributeModel : ZCLanguageMakeModel
 @property(nonatomic,assign)NSTextAlignment textAlignemt;
 @property(nonatomic,strong)NSMutableAttributedString *attributeString;
+@property(nonatomic,assign)CGFloat fontSize;
 @end

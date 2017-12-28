@@ -3,7 +3,7 @@
 //  QXDriver
 //
 //  Created by zhangchun on 2017/12/1.
-//  Copyright © 2017年 千夏. All rights reserved.
+//  Copyright © 2017年 zhangchun. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -13,11 +13,9 @@
 
 @property(nonatomic,strong)ZCLanguageMakeAttributeModel *attributeModel;
 
--(ZCConfiguerationLanguageBlock)makeLanguage;
--(ZCConfiguerationMutableAttributeLanguageBlock)makeAttributeLanguage;
-//-(ZCConfiguerationLanguageMakeAttributeBlock)makeAttributeModel;
+//-(ZCConfiguerationLanguageBlock)makeLanguage;
+//-(ZCConfiguerationMutableAttributeLanguageBlock)makeAttributeLanguage;
 -(void)makeAttributeModel:(void(^)(ZCLanguageMakeAttributeModel *attributeModel))block;
 -(void)switchLanguage;
--(void)switchLanguageAttribute;
-
+-(void)switchLanguageFont:(LanguageFont)font;
 @end

@@ -22,6 +22,8 @@
 		770D823A1FEC09F500FB8367 /* ZCLanguage.plist in Resources */ = {isa = PBXBuildFile; fileRef = 770D82301FEC09F500FB8367 /* ZCLanguage.plist */; };
 		770D823B1FEC09F500FB8367 /* ZCLanguageMakeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 770D82331FEC09F500FB8367 /* ZCLanguageMakeModel.m */; };
 		770D823C1FEC09F500FB8367 /* ZCLanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 770D82351FEC09F500FB8367 /* ZCLanguageManager.m */; };
+		779AC2221FF54DF600959935 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 779AC2211FF54DF600959935 /* SecondViewController.m */; };
+		779AC2251FF55BAB00959935 /* ZCAttributedStringLabelTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 779AC2241FF55BAB00959935 /* ZCAttributedStringLabelTool.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +74,10 @@
 		770D82331FEC09F500FB8367 /* ZCLanguageMakeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZCLanguageMakeModel.m; sourceTree = "<group>"; };
 		770D82341FEC09F500FB8367 /* ZCLanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZCLanguageManager.h; sourceTree = "<group>"; };
 		770D82351FEC09F500FB8367 /* ZCLanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZCLanguageManager.m; sourceTree = "<group>"; };
+		779AC2201FF54DF600959935 /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
+		779AC2211FF54DF600959935 /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		779AC2231FF55BAB00959935 /* ZCAttributedStringLabelTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZCAttributedStringLabelTool.h; sourceTree = "<group>"; };
+		779AC2241FF55BAB00959935 /* ZCAttributedStringLabelTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZCAttributedStringLabelTool.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +133,8 @@
 				770D81F61FEC09EC00FB8367 /* AppDelegate.m */,
 				770D81F81FEC09EC00FB8367 /* ViewController.h */,
 				770D81F91FEC09EC00FB8367 /* ViewController.m */,
+				779AC2201FF54DF600959935 /* SecondViewController.h */,
+				779AC2211FF54DF600959935 /* SecondViewController.m */,
 				770D81FB1FEC09EC00FB8367 /* Main.storyboard */,
 				770D81FE1FEC09EC00FB8367 /* Assets.xcassets */,
 				770D82001FEC09EC00FB8367 /* LaunchScreen.storyboard */,
@@ -163,6 +171,8 @@
 				770D822B1FEC09F500FB8367 /* UIButton+Language.m */,
 				770D822C1FEC09F500FB8367 /* UILabel+Language.h */,
 				770D822D1FEC09F500FB8367 /* UILabel+Language.m */,
+				779AC2231FF55BAB00959935 /* ZCAttributedStringLabelTool.h */,
+				779AC2241FF55BAB00959935 /* ZCAttributedStringLabelTool.m */,
 				770D822E1FEC09F500FB8367 /* UITextField+Language.h */,
 				770D822F1FEC09F500FB8367 /* UITextField+Language.m */,
 				770D82301FEC09F500FB8367 /* ZCLanguage.plist */,
@@ -309,8 +319,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				779AC2221FF54DF600959935 /* SecondViewController.m in Sources */,
 				770D823B1FEC09F500FB8367 /* ZCLanguageMakeModel.m in Sources */,
 				770D82381FEC09F500FB8367 /* UILabel+Language.m in Sources */,
+				779AC2251FF55BAB00959935 /* ZCAttributedStringLabelTool.m in Sources */,
 				770D81FA1FEC09EC00FB8367 /* ViewController.m in Sources */,
 				770D82391FEC09F500FB8367 /* UITextField+Language.m in Sources */,
 				770D82361FEC09F500FB8367 /* NSObject+Language.m in Sources */,

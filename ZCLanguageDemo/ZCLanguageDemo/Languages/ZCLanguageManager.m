@@ -3,7 +3,7 @@
 //  QXDriver
 //
 //  Created by zhangchun on 2017/12/1.
-//  Copyright © 2017年 千夏. All rights reserved.
+//  Copyright © 2017年 zhangchun. All rights reserved.
 //
 
 #import "ZCLanguageManager.h"
@@ -57,6 +57,23 @@ static ZCLanguageManager *__manager = nil;
 }
 
 
+-(void)switchLanguageFont:(LanguageFont)font{
+    [self.controls enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        UIView *view = (UIView*)obj;
+        [self lock];
+        if ([view isKindOfClass:[UILabel class]]) {
+            UILabel *langLabel = (UILabel*)view;
+            [langLabel switchLanguageFont:font];
+        }
+        else if ([view isKindOfClass:[UIButton class]]){
+            UIButton *LangButton = (UIButton*)view;
+            [LangButton switchLanguage];
+        }
+        [self unlock];
+    }];
+}
+
+
 -(void)addControls:(UIView*)control{
     NSString *hashKey = [NSString stringWithFormat:@"%ld",control.hash];
     id exist_control = [self.controls objectForKey:hashKey];
@@ -80,7 +97,7 @@ static ZCLanguageManager *__manager = nil;
 }
 
 -(LanguageType)fetchLanguage{
-    LanguageType defaultLanguageType = LanguageType_ChineseSimple;
+    LanguageType defaultLanguageType = LanguageType_default;
     NSNumber *LanguageType_Number =  [[NSUserDefaults standardUserDefaults] objectForKey:kLanguageKey];
     if (!LanguageType_Number) {
         [self saveLanguageType:defaultLanguageType];
@@ -92,6 +109,21 @@ static ZCLanguageManager *__manager = nil;
 -(void)saveLanguageType:(LanguageType)type{
     [[NSUserDefaults standardUserDefaults]setObject:@(type) forKey:kLanguageKey];
     [[NSUserDefaults standardUserDefaults]synchronize];
+}
+
+-(void)saveLanguageFontScale:(CGFloat)scale{
+    [[NSUserDefaults standardUserDefaults]setObject:@(scale) forKey:kFontSize];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+}
+
+-(CGFloat)fetchLanguageFontSize{
+    CGFloat scale = 1.0;
+    NSNumber *LanguageFontSize_Number =  [[NSUserDefaults standardUserDefaults] objectForKey:kFontSize];
+    if (!LanguageFontSize_Number) {
+        [self saveLanguageFontScale:scale];
+    }
+    else scale = floorf([LanguageFontSize_Number floatValue]*100)/100;
+    return scale;
 }
 
 -(NSString*)readLanguageWithKey:(NSString *)key languageType:(LanguageType)type{

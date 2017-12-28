@@ -3,7 +3,7 @@
 //  QXDriver
 //
 //  Created by zhangchun on 2017/12/1.
-//  Copyright © 2017年 千夏. All rights reserved.
+//  Copyright © 2017年 zhangchun. All rights reserved.
 //
 
 #ifndef ZCLanguageConfigueration_h
@@ -12,12 +12,23 @@
 #import "ZCLanguageMakeModel.h"
 #import <objc/runtime.h>
 static NSString *const kLanguageKey = @"kLanguageKey";
+static NSString *const kFontSize    = @"kFontSize";
+
+static CGFloat LittleScale = 0.8;
+static CGFloat StandardScale = 1.0;
+static CGFloat BigScale = 1.2;
 
 typedef NS_ENUM(NSInteger , LanguageType){
     LanguageType_ChineseSimple = 0,
     LanguageType_EngLish = 1,
     LanguageType_ChineseComplex = 2,
     LanguageType_default = LanguageType_ChineseSimple,
+};
+
+typedef NS_ENUM(NSInteger , LanguageFont){
+    LanguageFont_Little,
+    LanguageFont_Standard,
+    LanguageFont_Big,
 };
 
 

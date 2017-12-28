@@ -3,13 +3,14 @@
 //  QXDriver
 //
 //  Created by zhangchun on 2017/12/1.
-//  Copyright © 2017年 千夏. All rights reserved.
+//  Copyright © 2017年 zhangchun. All rights reserved.
 //
 
 #import "ZCLanguageMakeModel.h"
 #import "UILabel+Language.h"
-
-
+#import "NSObject+Language.h"
+#import "ZCLanguageManager.h"
+#import "ZCAttributedStringLabelTool.h"
 @interface ZCLanguageMakeModel()
 @property(nonatomic,strong)UIView *view;
 @end
@@ -44,16 +45,26 @@
 -(void)__configuerationDataSource_UILabel{
     
     UILabel *label = (UILabel*)self.view;
-    label.font = self.font?self.font:[UIFont systemFontOfSize:12];
-    label.text = self.text?self.text:@"";
-    label.textColor = self.color?self.color:[UIColor blackColor];
-    label.textAlignment = self.textAlignemt;
+    if (self.text.length&&!label.languageKey)label.languageKey = self.text;
+    else if (self.attributeString&&!label.languageKey)label.languageKey = [self.attributeString.string copy];
+    else NSAssert(self.text.length && self.attributeString, @"languageKey is not null");
+    
+    LanguageType languageType = [[ZCLanguageManager shareManager] fetchLanguage];
+    if (!languageType) languageType = LanguageType_default;
+    NSString *language = [[ZCLanguageManager shareManager] readLanguageWithKey:label.languageKey languageType:languageType];
+    NSAssert(language&&language.length, @"language is not null");
+    
     if (self.attributeString) {
-        label.attributedText = self.attributeString;
+        [[ZCAttributedStringLabelTool shareManager] managerAttributeWithNSMutableAttributedString:self.attributeString label:label language:language];
+    }
+    else{
+        CGFloat scale = [[ZCLanguageManager shareManager] fetchLanguageFontSize];
+        label.font = self.fontSize?[UIFont systemFontOfSize:scale*self.fontSize]:[UIFont systemFontOfSize:scale*12];
+        label.text = language?language:@"";
+        label.textColor = self.color?self.color:[UIColor blackColor];
+        label.textAlignment = self.textAlignemt;
     }
     label.attributeModel = self;
-//    NSLog(@"attribute is %@",label.attributeModel.text);
-//    int i = 0;
 }
 @end
 

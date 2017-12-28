@@ -3,7 +3,7 @@
 //  QXDriver
 //
 //  Created by zhangchun on 2017/12/1.
-//  Copyright © 2017年 千夏. All rights reserved.
+//  Copyright © 2017年 zhangchun. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -11,11 +11,28 @@
 @interface ZCLanguageManager : NSObject
 
 +(instancetype)shareManager;
+
+
 -(void)configuerationWith_plistFile:(NSString*)fileName;
+
 -(void)switchLanguageType:(LanguageType)type;
+
+-(void)switchLanguageFont:(LanguageFont)font;
+
 -(void)saveLanguageType:(LanguageType)type;
+
+-(void)saveLanguageFontScale:(CGFloat)scale;
+
 -(NSString*)readLanguageWithKey:(NSString*)key languageType:(LanguageType)type;
+
+-(CGFloat)fetchLanguageFontSize;
+
 -(LanguageType)fetchLanguage;
+
 -(void)addControls:(UIView*)control;
+
 -(void)removeControlWithHash:(NSUInteger)hash;
+
+
+
 @end
