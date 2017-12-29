@@ -8,10 +8,10 @@
 
 #import "ZCAttributedStringLabelTool.h"
 #import "ZCLanguageManager.h"
+#import "UILabel+Language.h"
 @implementation ZCAttributedStringLabelTool
 
 static ZCAttributedStringLabelTool *__tool = nil;
-
 +(instancetype)shareManager{
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -32,17 +32,22 @@ static ZCAttributedStringLabelTool *__tool = nil;
                               if (value) {
                                   *stop = YES;
                                   CGFloat fontSize = value.pointSize;
+                                  if (!label.orginFontSize) {
+                                      label.orginFontSize = [[NSNumber alloc] initWithFloat:fontSize];
+                                  }
                                   NSString *fontName = value.fontName;
                                   NSDictionary *dictionary = [mutString attributesAtIndex:0 effectiveRange:&range];
                                   NSMutableDictionary *mutable_dictionary = [[NSMutableDictionary alloc]init];
                                   [mutable_dictionary addEntriesFromDictionary:dictionary];
                                   CGFloat scale = [[ZCLanguageManager shareManager] fetchLanguageFontSize];
-                                  [mutable_dictionary setValue:[UIFont fontWithName:fontName size:scale * fontSize] forKey:NSFontAttributeName];
+                                  [mutable_dictionary setValue:[UIFont fontWithName:fontName size:scale*floorf([label.orginFontSize floatValue]*100/100)] forKey:NSFontAttributeName];
+                                  NSLog(@"----fontsize is %f",scale*floorf([label.orginFontSize floatValue]*100/100.0));
                                   [mutString addAttributes:mutable_dictionary range:range];
                                   [mutString replaceCharactersInRange:range withString:language];
                                   
-                                  //self.attributeModel.attributeString = mutString;
+                                  label.attributeModel.attributeString = mutString;
                                   label.attributedText = mutString;
+                                  
                               }
                           }];
 }

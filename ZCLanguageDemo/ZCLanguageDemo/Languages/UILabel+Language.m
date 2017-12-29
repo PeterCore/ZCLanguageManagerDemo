@@ -17,6 +17,20 @@
 
 @implementation UILabel (Language)
 
+
+-(NSNumber*)orginFontSize{
+    NSNumber *orginFontSize = objc_getAssociatedObject(self, @selector(orginFontSize));
+    if (!orginFontSize) {
+        orginFontSize = [[NSNumber alloc] init];
+        [self setOrginFontSize:orginFontSize];
+    }
+    return orginFontSize;
+}
+
+-(void)setOrginFontSize:(NSNumber *)orginFontSize{
+    objc_setAssociatedObject(self, @selector(orginFontSize), orginFontSize, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 -(ZCLanguageMakeAttributeModel*)attributeModel{
     ZCLanguageMakeAttributeModel *attributeModel = objc_getAssociatedObject(self, @selector(attributeModel));
     if (!attributeModel) {
@@ -121,15 +135,16 @@
     }
     [[ZCLanguageManager shareManager]saveLanguageFontScale:scale];
     if (self.attributeModel.fontSize) {
-        CGFloat fontSize = scale * self.attributeModel.fontSize;
+        CGFloat fontSize = scale * floorf([self.orginFontSize floatValue]*100/100);
         NSString *fontName = self.font.fontName;
-        self.font = [UIFont fontWithName:fontName size:fontSize];
+        if(fontSize != self.font.pointSize)
+           self.font = [UIFont fontWithName:fontName size:fontSize];
     }
     else if (self.attributeModel.attributeString){
         LanguageType languageType = [[ZCLanguageManager shareManager] fetchLanguage];
         if (!languageType) languageType = LanguageType_default;
         NSString *language = [[ZCLanguageManager shareManager] readLanguageWithKey:self.languageKey languageType:languageType];
-        [[ZCAttributedStringLabelTool shareManager] managerAttributeWithNSMutableAttributedString:self.attributeString label:self language:language];
+        [[ZCAttributedStringLabelTool shareManager] managerAttributeWithNSMutableAttributedString:self.attributeModel.attributeString label:self language:language];
     }
 }
 

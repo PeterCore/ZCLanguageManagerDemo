@@ -12,6 +12,7 @@
 @interface UILabel (Language)
 
 @property(nonatomic,strong)ZCLanguageMakeAttributeModel *attributeModel;
+@property(nonatomic,strong)NSNumber *orginFontSize;
 
 //-(ZCConfiguerationLanguageBlock)makeLanguage;
 //-(ZCConfiguerationMutableAttributeLanguageBlock)makeAttributeLanguage;

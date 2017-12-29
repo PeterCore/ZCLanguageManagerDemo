@@ -58,8 +58,15 @@
         [[ZCAttributedStringLabelTool shareManager] managerAttributeWithNSMutableAttributedString:self.attributeString label:label language:language];
     }
     else{
+        if (!label.orginFontSize) {
+            if (!self.fontSize) {
+                self.fontSize = 12;
+            }
+            label.orginFontSize = [[NSNumber alloc] initWithFloat:self.fontSize];
+        }
         CGFloat scale = [[ZCLanguageManager shareManager] fetchLanguageFontSize];
-        label.font = self.fontSize?[UIFont systemFontOfSize:scale*self.fontSize]:[UIFont systemFontOfSize:scale*12];
+        CGFloat fontSize = scale * floorf([label.orginFontSize floatValue]*100/100);
+        label.font = [UIFont systemFontOfSize:fontSize];
         label.text = language?language:@"";
         label.textColor = self.color?self.color:[UIColor blackColor];
         label.textAlignment = self.textAlignemt;
