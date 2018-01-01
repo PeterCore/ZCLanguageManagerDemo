@@ -85,11 +85,17 @@
     //[[ZCLanguageManager shareManager] switchLanguageType:(LanguageType_EngLish)];
     if (sender.tag == 1) {
         //[[ZCLanguageManager shareManager] switchLanguageFont:(LanguageFont_Little)];
-        [[ZCLanguageManager shareManager] switchLanguageType:(LanguageType_EngLish)];
+        [[ZCLanguageManager shareManager] switchLanguageType:(LanguageType_EngLish) completionBlock:^(BOOL success) {
+            
+        }];
     }
     else if(sender.tag == 2){
-        [[ZCLanguageManager shareManager] switchLanguageFont:(LanguageFont_Standard)];
-        [[ZCLanguageManager shareManager] switchLanguageType:(LanguageType_ChineseSimple)];
+//        [[ZCLanguageManager shareManager] switchLanguageFont:(LanguageFont_Standard) completionBlock:^(BOOL success) {
+//
+//        }];
+        [[ZCLanguageManager shareManager] switchLanguageType:(LanguageType_ChineseSimple) completionBlock:^(BOOL success) {
+            
+        }];
     }
     else{
         SecondViewController *secondVc = [[SecondViewController alloc] init];

@@ -7,12 +7,14 @@
 //
 
 #import "ZCLanguageManager.h"
+#import "NSObject+Language.h"
 #import "UILabel+Language.h"
 #import "UIButton+Language.h"
 @interface ZCLanguageManager()
 @property(nonatomic,strong)NSString *fileName;
 @property(nonatomic,strong)NSMutableDictionary *controls;
 @property(nonatomic,strong)NSRecursiveLock *recusiveLock;
+@property(nonatomic,strong)NSDictionary *languageDatas;
 //@property(nonatomic,strong)dispatch_queue_t queue_t;
 @end
 @implementation ZCLanguageManager
@@ -31,46 +33,50 @@ static ZCLanguageManager *__manager = nil;
         self.fileName = @"ZCLanguage";
         self.controls = [NSMutableDictionary dictionary];
         self.recusiveLock = [[NSRecursiveLock alloc] init];
+        self.languageDatas = [[NSMutableDictionary alloc] init];
        // self.queue_t = dispatch_queue_create([@"switch language queue_t" UTF8String], DISPATCH_QUEUE_CONCURRENT);
     }
     return self;
 }
 
 
--(void)switchLanguageType:(LanguageType)type{
+-(void)switchLanguageType:(LanguageType)type completionBlock:(void (^)(BOOL))completionBlock{
     
     [self saveLanguageType:type];
+    __block NSInteger index = 0;
     [self.controls enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
         UIView *view = (UIView*)obj;
         [self lock];
-        if ([view isKindOfClass:[UILabel class]]) {
-            UILabel *langLabel = (UILabel*)view;
-            [langLabel switchLanguage];
+        [view switchLanguage];
+        if (index == self.controls.allKeys.count-1) {
+            if (completionBlock) {
+                completionBlock(YES);
+            }
         }
-        else if ([view isKindOfClass:[UIButton class]]){
-            UIButton *LangButton = (UIButton*)view;
-            [LangButton switchLanguage];
-        }
+        index++;
         [self unlock];
     }];
     
 }
 
 
--(void)switchLanguageFont:(LanguageFont)font{
+-(void)switchLanguageFont:(LanguageFont)font completionBlock:(void (^)(BOOL))completionBlock{
+    __block NSInteger index = 0;
     [self.controls enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
         UIView *view = (UIView*)obj;
         [self lock];
-        if ([view isKindOfClass:[UILabel class]]) {
-            UILabel *langLabel = (UILabel*)view;
-            [langLabel switchLanguageFont:font];
+        [view switchLanguageFont:font];
+        if (index == self.controls.allKeys.count-1) {
+            if (completionBlock) {
+                completionBlock(YES);
+            }
         }
-        else if ([view isKindOfClass:[UIButton class]]){
-            UIButton *LangButton = (UIButton*)view;
-            [LangButton switchLanguage];
-        }
+        index++;
         [self unlock];
+      
     }];
+   
+    
 }
 
 
@@ -91,6 +97,11 @@ static ZCLanguageManager *__manager = nil;
     }
 }
 
+-(id)fetchControlWithHash:(NSUInteger)hash{
+    NSString *hasKey = [NSString stringWithFormat:@"%ld",hash];
+    id exist_control = [self.controls objectForKey:hasKey];
+    return exist_control;
+}
 
 -(void)configuerationWith_plistFile:(NSString *)fileName{
     self.fileName = fileName;
@@ -129,8 +140,10 @@ static ZCLanguageManager *__manager = nil;
 -(NSString*)readLanguageWithKey:(NSString *)key languageType:(LanguageType)type{
     
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:self.fileName ofType:@"plist"];
-    NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath];
-    NSArray *languageList = data[key];
+    if (!self.languageDatas.allKeys.count) {
+        self.languageDatas = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath];
+    }
+    NSArray *languageList = self.languageDatas[key];
     NSString *language = languageList[type];
     return language;
 }

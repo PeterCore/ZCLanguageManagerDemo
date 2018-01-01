@@ -41,8 +41,8 @@ typedef UIView*(^ZCConfiguerationLanguageBlock)(NSString *languageKey);
 typedef UIView*(^ZCConfiguerationFontLanguageBlock)(UIFont *font);
 #define ZCConfiguerationFontLanguageBlock(font) ^UIView* (UIFont *font)
 
-typedef UIView*(^ZCConfiguerationFontSizeLanguageBlock)(NSInteger size);
-#define ZCConfiguerationFontSizeLanguageBlock(size) ^UIView* (NSInteger size)
+typedef UIView*(^ZCConfiguerationFontSizeLanguageBlock)(CGFloat fontSize);
+#define ZCConfiguerationFontSizeLanguageBlock(fontSize) ^UIView* (CGFloat fontSize)
 
 typedef UIView*(^ZCConfiguerationFontNameLanguageBlock)(NSString *fontName);
 #define ZCConfiguerationFontNameLanguageBlock(fontName) ^UIView* (NSString *fontName)
@@ -55,5 +55,8 @@ typedef UIView*(^ZCConfiguerationMutableAttributeLanguageBlock)(NSMutableAttribu
 
 typedef UIView*(^ZCConfiguerationButtonLanguageBlock)(NSString *title, UIControlState state);
 #define ZCConfiguerationButtonLanguageBlock(title,state) ^UIView* (NSString *title, UIControlState state)
+
+
+
 
 #endif /* ZCLanguageConfigueration_h */

@@ -13,6 +13,8 @@
 @property(nonatomic,strong)UIFont   *font;
 @property(nonatomic,strong)UIColor  *color;
 @property(nonatomic,strong)NSString *fontName;
+@property(nonatomic,assign)CGFloat  fontSize;
+
 
 -(instancetype)initWithView:(UIView*)view;
 -(void)configuerationDataSource;
@@ -22,5 +24,13 @@
 @interface ZCLanguageMakeAttributeModel : ZCLanguageMakeModel
 @property(nonatomic,assign)NSTextAlignment textAlignemt;
 @property(nonatomic,strong)NSMutableAttributedString *attributeString;
-@property(nonatomic,assign)CGFloat fontSize;
 @end
+
+@interface ZCLanguageButtonAttributeModel:ZCLanguageMakeModel
+@property(nonatomic,assign)UIControlState state;
+@end
+
+
+
+
+

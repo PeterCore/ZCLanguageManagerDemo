@@ -12,12 +12,11 @@
 
 +(instancetype)shareManager;
 
-
 -(void)configuerationWith_plistFile:(NSString*)fileName;
 
--(void)switchLanguageType:(LanguageType)type;
+-(void)switchLanguageType:(LanguageType)type completionBlock:(void(^)(BOOL success))completionBlock;
 
--(void)switchLanguageFont:(LanguageFont)font;
+-(void)switchLanguageFont:(LanguageFont)font completionBlock:(void(^)(BOOL success))completionBlock;
 
 -(void)saveLanguageType:(LanguageType)type;
 
@@ -33,6 +32,6 @@
 
 -(void)removeControlWithHash:(NSUInteger)hash;
 
-
+-(id)fetchControlWithHash:(NSUInteger)hash;
 
 @end

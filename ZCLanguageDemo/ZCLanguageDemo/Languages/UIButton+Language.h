@@ -10,5 +10,8 @@
 #import "ZCLanguageConfigueration.h"
 @interface UIButton (Language)
 -(ZCConfiguerationButtonLanguageBlock)makeTitle;
+-(ZCConfiguerationFontNameLanguageBlock)makeFontName;
+-(ZCConfiguerationFontSizeLanguageBlock)makeFontSize;
 -(void)switchLanguage;
+-(void)makeButtonAttributeModel:(void(^)(ZCLanguageButtonAttributeModel *attributeModel))block;
 @end

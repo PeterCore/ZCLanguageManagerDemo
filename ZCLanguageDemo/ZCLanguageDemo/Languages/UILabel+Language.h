@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NSObject+Language.h"
 #import "ZCLanguageConfigueration.h"
 #import "ZCLanguageMakeModel.h"
 @interface UILabel (Language)
 
 @property(nonatomic,strong)ZCLanguageMakeAttributeModel *attributeModel;
-@property(nonatomic,strong)NSNumber *orginFontSize;
 
 //-(ZCConfiguerationLanguageBlock)makeLanguage;
 //-(ZCConfiguerationMutableAttributeLanguageBlock)makeAttributeLanguage;

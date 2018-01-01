@@ -33,9 +33,6 @@
         NSRange range = NSMakeRange(0, attribute.string.length);
         NSDictionary *dictionary = [attribute attributesAtIndex:0 effectiveRange:&range];
         LanguageType languageType = [[ZCLanguageManager shareManager] fetchLanguage];
-        if (!languageType) {
-            languageType = LanguageType_default;
-        }
         NSString *language = [[ZCLanguageManager shareManager] readLanguageWithKey:self.languageKey languageType:languageType];
         NSInteger length = language.length;
         range = NSMakeRange(0, length);
@@ -58,9 +55,6 @@
             self.languageKey = languageKey;
         }
         LanguageType languageType = [[ZCLanguageManager shareManager] fetchLanguage];
-        if (!languageType) {
-            languageType = LanguageType_default;
-        }
         NSString *language = [[ZCLanguageManager shareManager] readLanguageWithKey:self.languageKey languageType:languageType];
         if (!language || !language.length) {
             self.placeholder = languageKey;
@@ -78,9 +72,6 @@
 -(void)switchLanguage
 {
     LanguageType languageType = [[ZCLanguageManager shareManager] fetchLanguage];
-    if (!languageType) {
-        languageType = LanguageType_ChineseSimple;
-    }
     NSString *language = [[ZCLanguageManager shareManager] readLanguageWithKey:self.languageKey languageType:languageType];
     if ([self.isAttributedString isEqualToString:@"NO"]) {
         self.placeholder = language;

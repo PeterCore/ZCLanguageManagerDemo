@@ -11,6 +11,21 @@
 //static  char kLanguageAttribute;
 
 @implementation NSObject (Language)
+
+
+-(NSNumber*)orginFontSize{
+    NSNumber *orginFontSize = objc_getAssociatedObject(self, @selector(orginFontSize));
+    if (!orginFontSize) {
+        orginFontSize = [[NSNumber alloc] init];
+        [self setOrginFontSize:orginFontSize];
+    }
+    return orginFontSize;
+}
+
+-(void)setOrginFontSize:(NSNumber *)orginFontSize{
+    objc_setAssociatedObject(self, @selector(orginFontSize), orginFontSize, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 -(NSString*)languageKey{
     NSString *languageKey = objc_getAssociatedObject(self, @selector(languageKey));
     if (!languageKey) {
@@ -46,6 +61,9 @@
 
 -(void)switchLanguage
 {
+    
+}
+-(void)switchLanguageFont:(LanguageFont)font{
     
 }
 

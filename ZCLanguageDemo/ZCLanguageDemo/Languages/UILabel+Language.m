@@ -7,7 +7,6 @@
 //
 
 #import "UILabel+Language.h"
-#import "NSObject+Language.h"
 #import "ZCLanguageManager.h"
 #import "ZCAttributedStringLabelTool.h"
 //#import <objc/runtime.h>
@@ -17,19 +16,6 @@
 
 @implementation UILabel (Language)
 
-
--(NSNumber*)orginFontSize{
-    NSNumber *orginFontSize = objc_getAssociatedObject(self, @selector(orginFontSize));
-    if (!orginFontSize) {
-        orginFontSize = [[NSNumber alloc] init];
-        [self setOrginFontSize:orginFontSize];
-    }
-    return orginFontSize;
-}
-
--(void)setOrginFontSize:(NSNumber *)orginFontSize{
-    objc_setAssociatedObject(self, @selector(orginFontSize), orginFontSize, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
 
 -(ZCLanguageMakeAttributeModel*)attributeModel{
     ZCLanguageMakeAttributeModel *attributeModel = objc_getAssociatedObject(self, @selector(attributeModel));

@@ -9,6 +9,7 @@
 #import "SecondViewController.h"
 #import "UILabel+Language.h"
 #import "ZCLanguageManager.h"
+#import "UIButton+Language.h"
 @interface SecondViewController ()
 
 @end
@@ -67,6 +68,11 @@
     UIButton *button_1 = [[UIButton alloc] initWithFrame:CGRectMake(100, 400, 100, 100)];
     button_1.backgroundColor = [UIColor redColor];
     button_1.tag = 2;
+    [button_1 setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [button_1 setTitleColor:[UIColor blueColor] forState:UIControlStateDisabled];
+    button_1.makeFontSize(15);
+    button_1.makeTitle(@"订单详情",UIControlStateNormal);
+    button_1.makeTitle(@"订单详情",UIControlStateDisabled);
     [self.view addSubview:button_1];
     [button_1 addTarget:self action:@selector(click:) forControlEvents:(UIControlEventTouchUpInside)];
     
@@ -80,10 +86,14 @@
 -(void)click:(UIButton*)sender{
     //[[ZCLanguageManager shareManager] switchLanguageType:(LanguageType_EngLish)];
     if (sender.tag == 1) {
-        [[ZCLanguageManager shareManager] switchLanguageFont:(LanguageFont_Little)];
+        [[ZCLanguageManager shareManager] switchLanguageFont:(LanguageFont_Little) completionBlock:^(BOOL success) {
+            
+        }];
     }
     else if(sender.tag == 2){
-        [[ZCLanguageManager shareManager] switchLanguageFont:(LanguageFont_Standard)];
+        [[ZCLanguageManager shareManager] switchLanguageFont:(LanguageFont_Standard) completionBlock:^(BOOL success) {
+            
+        }];
 
     }
     else  [self dismissViewControllerAnimated:YES completion:nil];
