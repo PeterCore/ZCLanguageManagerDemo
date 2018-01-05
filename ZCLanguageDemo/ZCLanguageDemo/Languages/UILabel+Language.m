@@ -3,7 +3,7 @@
 //  QXDriver
 //
 //  Created by zhangchun on 2017/12/1.
-//  Copyright © 2017年 comp. All rights reserved.
+//  Copyright © 2017年 zhangchun. All rights reserved.
 //
 
 #import "UILabel+Language.h"
@@ -16,92 +16,72 @@
 
 @implementation UILabel (Language)
 
++(void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        Class class = [self class];
+        NSLog(@"----Class is %@",NSStringFromClass([self class]));
 
--(ZCLanguageMakeAttributeModel*)attributeModel{
-    ZCLanguageMakeAttributeModel *attributeModel = objc_getAssociatedObject(self, @selector(attributeModel));
-    if (!attributeModel) {
-        attributeModel = [[ZCLanguageMakeAttributeModel alloc] init];
-    }
-    return attributeModel;
-}
-
--(void)setAttributeModel:(ZCLanguageMakeAttributeModel *)attributeModel{
-    objc_setAssociatedObject(self, @selector(attributeModel), attributeModel, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
--(NSString*)isAttributedString{
-    NSString *attribute = objc_getAssociatedObject(self, @selector(isAttributedString));
-    if (!attribute) {
-        attribute = @"NO";
-    }
-    return attribute;
-}
-
--(void)setIsAttributedString:(NSString *)isAttributedString{
-    objc_setAssociatedObject(self, @selector(isAttributedString), isAttributedString, OBJC_ASSOCIATION_COPY_NONATOMIC);
-}
-
-
--(void)makeAttributeModel:(void (^)(ZCLanguageMakeAttributeModel *))block{
-    ZCLanguageMakeAttributeModel *attributeModel = [[ZCLanguageMakeAttributeModel alloc] initWithView:self];
-    if (block) {
-        block(attributeModel);
-    }
-    [attributeModel configuerationDataSource];
-    [[ZCLanguageManager shareManager] addControls:self];
-
-}
-
-/**
- ** only switch language text
- **/
-/*-(ZCConfiguerationLanguageBlock)makeLanguage{
-    ZCConfiguerationLanguageBlock languageBlock = ZCConfiguerationLanguageBlock(languageKey){
-        NSAssert(languageKey&&languageKey.length, @"languageKey must not to be null");
-        if (languageKey) {
-            self.languageKey = languageKey;
+        SEL originalSelectorDidAppear = @selector(didMoveToSuperview);
+        SEL swizzledSelectorDidAppear = @selector(kb_didMoveToSuperview);
+        
+        Method originalMethodAppear = class_getInstanceMethod(class, originalSelectorDidAppear);
+        Method swizzledMethodAppear = class_getInstanceMethod(class, swizzledSelectorDidAppear);
+        
+        BOOL willAddMethod =
+        class_addMethod(class,
+                        originalSelectorDidAppear,
+                        method_getImplementation(swizzledMethodAppear),
+                        method_getTypeEncoding(swizzledMethodAppear));
+        
+        if (willAddMethod) {
+            class_replaceMethod(class,
+                                swizzledSelectorDidAppear,
+                                method_getImplementation(originalMethodAppear),
+                                method_getTypeEncoding(originalMethodAppear));
+        } else {
+            method_exchangeImplementations(originalMethodAppear, swizzledMethodAppear);
         }
-        LanguageType languageType = [[ZCLanguageManager shareManager] fetchLanguage];
-        if (!languageType) {
-            languageType = LanguageType_default;
+        
+    });
+}
+
+
+-(void)kb_didMoveToSuperview{
+    if ([NSStringFromClass([self class]) isEqualToString:@"UIButtonLabel"]) {
+        return;
+    }
+    if (!self.languageKey&&!self.languageKey.length) {
+        if (self.text) {
+            self.languageKey = self.text;
         }
-        NSString *language = [[ZCLanguageManager shareManager] readLanguageWithKey:self.languageKey languageType:languageType];
-        if (!language || !language.length) {
-            self.text = languageKey;
-        }
-        else
-            self.text = language;
-        self.isAttributedString = @"NO";
-        [[ZCLanguageManager shareManager] addControls:self];
-        return self;
-    };
-    return languageBlock;
+        else self.languageKey = [self.attributedText.string copy];
+    }
+    LanguageType languageType = [[ZCLanguageManager shareManager] fetchLanguage];
+    NSString *language = [[ZCLanguageManager shareManager] readLanguageWithKey:self.languageKey languageType:languageType];
     
-}
-
--(ZCConfiguerationMutableAttributeLanguageBlock)makeAttributeLanguage{
-
-    ZCConfiguerationMutableAttributeLanguageBlock LanguageAttributeBlock = ZCConfiguerationMutableAttributeLanguageBlock(attribute){
-        NSAssert(attribute.string&&attribute.string.length, @"attribue.string must not to be null");
-        self.languageKey = attribute.string;
-        NSRange range = NSMakeRange(0, attribute.string.length);
-        NSDictionary *dictionary = [attribute attributesAtIndex:0 effectiveRange:&range];
-        LanguageType languageType = [[ZCLanguageManager shareManager] fetchLanguage];
-        if (!languageType) {
-            languageType = LanguageType_default;
+    if (!language.length&&!language) {
+        language = self.languageKey;
+    }
+    NSAssert(language&&language.length, @"language is not null");
+    if (self.attributedText) {
+        [[ZCAttributedStringLabelTool shareManager] managerAttributeWithNSMutableAttributedString:[self.attributedText mutableCopy] label:self language:language];
+    }
+    else{
+        if (!self.orginFontSize) {// first init fontSize
+            if (!self.font.pointSize) {
+                self.font = [UIFont systemFontOfSize:12];
+            }
+            self.orginFontSize = [[NSNumber alloc] initWithFloat:self.font.pointSize];
         }
-        NSString *language = [[ZCLanguageManager shareManager] readLanguageWithKey:self.languageKey languageType:languageType];
-        NSInteger length = language.length;
-        range = NSMakeRange(0, length);
-        attribute = [[NSMutableAttributedString alloc] initWithString:language];
-        [attribute addAttributes:dictionary range:range];
-        self.attributedText = attribute;
-        self.isAttributedString = @"YES";
-        [[ZCLanguageManager shareManager] addControls:self];
-        return self;
-    };
-    return LanguageAttributeBlock;
-}*/
+        CGFloat scale = [[ZCLanguageManager shareManager] fetchLanguageFontSize];
+        CGFloat fontSize = scale * floorf([self.orginFontSize floatValue]*100/100);
+        self.font = self.font.fontName.length?[UIFont fontWithName:self.font.fontName size:fontSize]:[UIFont systemFontOfSize:fontSize];
+        self.text = language?language:@"";
+    }
+    [[ZCLanguageManager shareManager] addControls:self];
+}
 
 
 -(void)switchLanguageFont:(LanguageFont)font{
@@ -120,17 +100,17 @@
             break;
     }
     [[ZCLanguageManager shareManager]saveLanguageFontScale:scale];
-    if (self.attributeModel.fontSize) {
+    if (!self.attributedText) {
         CGFloat fontSize = scale * floorf([self.orginFontSize floatValue]*100/100);
         NSString *fontName = self.font.fontName;
         if(fontSize != self.font.pointSize)
            self.font = [UIFont fontWithName:fontName size:fontSize];
     }
-    else if (self.attributeModel.attributeString){
+    else if (self.attributedText){
         LanguageType languageType = [[ZCLanguageManager shareManager] fetchLanguage];
         if (!languageType) languageType = LanguageType_default;
         NSString *language = [[ZCLanguageManager shareManager] readLanguageWithKey:self.languageKey languageType:languageType];
-        [[ZCAttributedStringLabelTool shareManager] managerAttributeWithNSMutableAttributedString:self.attributeModel.attributeString label:self language:language];
+        [[ZCAttributedStringLabelTool shareManager] managerAttributeWithNSMutableAttributedString:[self.attributedText mutableCopy] label:self language:language];
     }
 }
 
@@ -142,7 +122,7 @@
         languageType = LanguageType_default;
     }
     NSString *language = [[ZCLanguageManager shareManager] readLanguageWithKey:self.languageKey languageType:languageType];
-    if (!self.attributeModel.attributeString) {
+    if (!self.attributedText) {
         self.text = language;
     }
     else{
@@ -153,7 +133,7 @@
         range = NSMakeRange(0, length);
         [attribute addAttributes:dictionary range:range];
         self.attributedText = attribute;
-        self.attributeModel.attributeString = attribute;
+        //self.attributeModel.attributeString = attribute;
     }
 }
 

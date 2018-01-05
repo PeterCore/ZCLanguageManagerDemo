@@ -45,7 +45,7 @@ static ZCAttributedStringLabelTool *__tool = nil;
                                   [mutString addAttributes:mutable_dictionary range:range];
                                   [mutString replaceCharactersInRange:range withString:language];
                                   
-                                  label.attributeModel.attributeString = mutString;
+                                  //label.attributeModel.attributeString = mutString;
                                   label.attributedText = mutString;
                                   
                               }

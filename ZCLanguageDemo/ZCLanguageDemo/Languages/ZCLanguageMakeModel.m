@@ -48,7 +48,7 @@
 
 -(void)__configuerationDataSource_UILabel{
     
-    UILabel *label = (UILabel*)self.view;
+   /* UILabel *label = (UILabel*)self.view;
     if (self.text.length&&!label.languageKey)label.languageKey = self.text;
     else if (self.attributeString&&!label.languageKey)label.languageKey = [self.attributeString.string copy];
     else NSAssert(self.text.length && self.attributeString, @"languageKey is not null");
@@ -77,7 +77,7 @@
         label.textColor = self.color?self.color:[UIColor blackColor];
         label.textAlignment = self.textAlignemt;
     }
-    label.attributeModel = self;
+    label.attributeModel = self;*/
 }
 
 

@@ -9,9 +9,11 @@
 #import "UIButton+Language.h"
 #import "NSObject+Language.h"
 #import "ZCLanguageManager.h"
+#import <objc/message.h>
 
 //#import <objc/runtime.h>
 static CGFloat defaultSize = 12;
+
 @interface UIButton(Language_Private)
 @property(nonatomic,strong)NSMutableDictionary *stateDictionary;
 @end
@@ -31,7 +33,66 @@ static CGFloat defaultSize = 12;
 }
 
 
--(void)makeButtonAttributeModel:(void (^)(ZCLanguageButtonAttributeModel *))block{
++(void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        Class class = [self class];
+        
+        SEL originalSelectorDidAppear = @selector(didMoveToSuperview);
+        SEL swizzledSelectorDidAppear = @selector(kb_didMoveToSuperview);
+        
+        Method originalMethodAppear = class_getInstanceMethod(class, originalSelectorDidAppear);
+        Method swizzledMethodAppear = class_getInstanceMethod(class, swizzledSelectorDidAppear);
+        
+        BOOL willAddMethod =
+        class_addMethod(class,
+                        originalSelectorDidAppear,
+                        method_getImplementation(swizzledMethodAppear),
+                        method_getTypeEncoding(swizzledMethodAppear));
+        
+        if (willAddMethod) {
+            class_replaceMethod(class,
+                                swizzledSelectorDidAppear,
+                                method_getImplementation(originalMethodAppear),
+                                method_getTypeEncoding(originalMethodAppear));
+        } else {
+            method_exchangeImplementations(originalMethodAppear, swizzledMethodAppear);
+        }
+    
+        
+    });
+}
+
+
+-(void)insertOrignKeyWithState:(UIControlState) state{
+    if (![self.stateDictionary objectForKey:@(state)]) {
+        NSString *currentTitle = [self titleForState:(state)];
+        if(currentTitle){
+            [self.stateDictionary setObject:currentTitle forKey:@(state)];
+        }
+    }
+}
+
+-(void)kb_didMoveToSuperview{
+    if (!self.orginFontSize) {
+        self.orginFontSize = [[NSNumber alloc] initWithFloat:self.titleLabel.font.pointSize];
+    }
+    
+   /* UIControlStateNormal       = 0,
+    UIControlStateHighlighted  = 1 << 0,                  // used when UIControl isHighlighted is set
+    UIControlStateDisabled     = 1 << 1,
+    UIControlStateSelected*/
+    [self insertOrignKeyWithState:UIControlStateNormal];
+    [self insertOrignKeyWithState:UIControlStateHighlighted];
+    [self insertOrignKeyWithState:UIControlStateDisabled];
+    [self insertOrignKeyWithState:UIControlStateSelected];
+    [self switchLanguage];
+    [[ZCLanguageManager shareManager] addControls:self];
+
+}
+
+/*-(void)makeButtonAttributeModel:(void (^)(ZCLanguageButtonAttributeModel *))block{
     ZCLanguageButtonAttributeModel *attributeModel = [[ZCLanguageButtonAttributeModel alloc] initWithView:self];
     if (block) {
         block(attributeModel);
@@ -97,7 +158,7 @@ static CGFloat defaultSize = 12;
     };
     return makeFontNameBlock;
     
-}
+}*/
 
 -(void)switchLanguageFont:(LanguageFont)font{
     CGFloat scale = 0;
@@ -127,6 +188,7 @@ static CGFloat defaultSize = 12;
         NSNumber *state_number = (NSNumber*)key;
         NSString *title        = (NSString*)obj;
         NSString *language     = [[ZCLanguageManager shareManager] readLanguageWithKey:title languageType:languageType];
+        language = language?language:title;
         [self setTitle:language forState:[state_number integerValue]];
     }];
 }

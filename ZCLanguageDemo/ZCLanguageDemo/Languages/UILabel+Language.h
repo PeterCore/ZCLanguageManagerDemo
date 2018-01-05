@@ -12,11 +12,11 @@
 #import "ZCLanguageMakeModel.h"
 @interface UILabel (Language)
 
-@property(nonatomic,strong)ZCLanguageMakeAttributeModel *attributeModel;
+//@property(nonatomic,strong)ZCLanguageMakeAttributeModel *attributeModel;
 
 //-(ZCConfiguerationLanguageBlock)makeLanguage;
 //-(ZCConfiguerationMutableAttributeLanguageBlock)makeAttributeLanguage;
--(void)makeAttributeModel:(void(^)(ZCLanguageMakeAttributeModel *attributeModel))block;
+//-(void)makeAttributeModel:(void(^)(ZCLanguageMakeAttributeModel *attributeModel))block;
 -(void)switchLanguage;
 -(void)switchLanguageFont:(LanguageFont)font;
 @end
