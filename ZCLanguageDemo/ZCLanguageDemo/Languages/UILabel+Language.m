@@ -108,7 +108,6 @@
     }
     else if (self.attributedText){
         LanguageType languageType = [[ZCLanguageManager shareManager] fetchLanguage];
-        if (!languageType) languageType = LanguageType_default;
         NSString *language = [[ZCLanguageManager shareManager] readLanguageWithKey:self.languageKey languageType:languageType];
         [[ZCAttributedStringLabelTool shareManager] managerAttributeWithNSMutableAttributedString:[self.attributedText mutableCopy] label:self language:language];
     }
@@ -118,9 +117,6 @@
 -(void)switchLanguage
 {
     LanguageType languageType = [[ZCLanguageManager shareManager] fetchLanguage];
-    if (!languageType) {
-        languageType = LanguageType_default;
-    }
     NSString *language = [[ZCLanguageManager shareManager] readLanguageWithKey:self.languageKey languageType:languageType];
     if (!self.attributedText) {
         self.text = language;

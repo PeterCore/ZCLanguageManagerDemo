@@ -108,15 +108,19 @@ static ZCLanguageManager *__manager = nil;
 }
 
 -(LanguageType)fetchLanguage{
-    LanguageType defaultLanguageType = LanguageType_default;
+    //LanguageType defaultLanguageType = LanguageType_default;
     NSNumber *LanguageType_Number =  [[NSUserDefaults standardUserDefaults] objectForKey:kLanguageKey];
     if (!LanguageType_Number) {
-        [self saveLanguageType:defaultLanguageType];
+        LanguageType_Number = @(LanguageType_default);
+        [self saveLanguageType:LanguageType_default];
     }
-    else defaultLanguageType = [LanguageType_Number integerValue];
+    LanguageType defaultLanguageType = [LanguageType_Number integerValue];
     return defaultLanguageType;
 }
 
+/*
+ *保存文字类型 // 中文, 英文，。。。。
+ */
 -(void)saveLanguageType:(LanguageType)type{
     [[NSUserDefaults standardUserDefaults]setObject:@(type) forKey:kLanguageKey];
     [[NSUserDefaults standardUserDefaults]synchronize];

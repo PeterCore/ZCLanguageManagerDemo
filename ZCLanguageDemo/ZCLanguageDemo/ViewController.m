@@ -10,11 +10,51 @@
 #import "UILabel+Language.h"
 #import "ZCLanguageManager.h"
 #import "SecondViewController.h"
+#import <AFNetworking/AFNetWorking.h>
 @interface ViewController ()
+@property(nonatomic ,strong)  AFHTTPSessionManager *httpManager;
 
 @end
 
 @implementation ViewController
+
+-(void)test{
+    self.httpManager = [AFHTTPSessionManager manager];
+    self.httpManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];        //[manager.requestSerializer setValue:@"application/json;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    
+    
+    //self.httpManager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    self.httpManager.requestSerializer = [AFJSONRequestSerializer serializer];
+    self.httpManager.operationQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
+    self.httpManager.completionQueue = dispatch_get_main_queue();
+    NSDictionary *deviceInfo=@{@"phoneNumber":@"",
+                               @"system_version":[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"],
+                               @"platform":@"iOS",
+                               @"model":[[UIDevice currentDevice] model],
+                               @"screen":[NSString stringWithFormat:@"%ld*%ld",(long)([[UIScreen mainScreen]bounds].size.width*[UIScreen mainScreen].scale),(long)([[UIScreen mainScreen]bounds].size.height*[UIScreen mainScreen].scale)]};
+    
+    NSDictionary *body=@{@"user_name":@"zhoutm",
+                         @"pwd":@"150401"};
+    
+    
+    
+    NSDictionary *param=@{@"engine_version":@"2",
+                          @"device_info":deviceInfo,
+                          @"body":body};
+    [self.httpManager.requestSerializer setValue:@"IResource" forHTTPHeaderField:@"User-Agent"];
+    NSURLSessionDataTask *dataTask =[self.httpManager POST:@"http://123.126.34.170:7029/IRES-V2/mobapp/logon.spr?method=login" parameters:param progress:^(NSProgress * _Nonnull uploadProgress) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+       
+        NSLog(@"-----%@",responseObject);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        
+        
+    }];
+    [dataTask resume];
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -81,6 +121,9 @@
     
     UIButton *button_1 = [[UIButton alloc] initWithFrame:CGRectMake(100, 400, 100, 100)];
     button_1.backgroundColor = [UIColor redColor];
+    [button_1 setTitle:@"切换文字" forState:(UIControlStateNormal)];
+    [button_1 setTitle:@"切换文字" forState:(UIControlStateSelected)];
+    button_1.titleLabel.font = [UIFont systemFontOfSize:15];
     button_1.tag = 2;
     [self.view addSubview:button_1];
     [button_1 addTarget:self action:@selector(click:) forControlEvents:(UIControlEventTouchUpInside)];
@@ -98,15 +141,16 @@
     //[[ZCLanguageManager shareManager] switchLanguageType:(LanguageType_EngLish)];
     if (sender.tag == 1) {
         //[[ZCLanguageManager shareManager] switchLanguageFont:(LanguageFont_Little)];
-        [[ZCLanguageManager shareManager] switchLanguageType:(LanguageType_EngLish) completionBlock:^(BOOL success) {
-            
-        }];
+//        [[ZCLanguageManager shareManager] switchLanguageType:(LanguageType_EngLish) completionBlock:^(BOOL success) {
+//
+//        }];
+        [self test];
     }
     else if(sender.tag == 2){
 //        [[ZCLanguageManager shareManager] switchLanguageFont:(LanguageFont_Standard) completionBlock:^(BOOL success) {
 //
 //        }];
-        [[ZCLanguageManager shareManager] switchLanguageType:(LanguageType_ChineseSimple) completionBlock:^(BOOL success) {
+        [[ZCLanguageManager shareManager] switchLanguageType:(LanguageType_ChineseComplex) completionBlock:^(BOOL success) {
             
         }];
     }

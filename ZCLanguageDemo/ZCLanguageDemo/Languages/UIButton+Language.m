@@ -64,7 +64,6 @@ static CGFloat defaultSize = 12;
     });
 }
 
-
 -(void)insertOrignKeyWithState:(UIControlState) state{
     if (![self.stateDictionary objectForKey:@(state)]) {
         NSString *currentTitle = [self titleForState:(state)];
@@ -83,12 +82,12 @@ static CGFloat defaultSize = 12;
     UIControlStateHighlighted  = 1 << 0,                  // used when UIControl isHighlighted is set
     UIControlStateDisabled     = 1 << 1,
     UIControlStateSelected*/
+    [[ZCLanguageManager shareManager] addControls:self];
     [self insertOrignKeyWithState:UIControlStateNormal];
     [self insertOrignKeyWithState:UIControlStateHighlighted];
     [self insertOrignKeyWithState:UIControlStateDisabled];
     [self insertOrignKeyWithState:UIControlStateSelected];
     [self switchLanguage];
-    [[ZCLanguageManager shareManager] addControls:self];
 
 }
 

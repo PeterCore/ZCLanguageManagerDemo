@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger , LanguageType){
     LanguageType_ChineseSimple = 0,
     LanguageType_EngLish = 1,
     LanguageType_ChineseComplex = 2,
-    LanguageType_default = LanguageType_ChineseSimple,
+    LanguageType_default = LanguageType_EngLish,
 };
 
 typedef NS_ENUM(NSInteger , LanguageFont){
